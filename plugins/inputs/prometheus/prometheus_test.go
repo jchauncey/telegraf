@@ -2,6 +2,7 @@ package prometheus
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -23,6 +24,7 @@ go_gc_duration_seconds_count 7
 # HELP go_goroutines Number of goroutines that currently exist.
 # TYPE go_goroutines gauge
 go_goroutines 15
+go_gc_metric NaN
 `
 
 func TestPrometheusGeneratesMetrics(t *testing.T) {
@@ -47,6 +49,7 @@ func TestPrometheusGeneratesMetrics(t *testing.T) {
 	}{
 		{"prometheus_go_gc_duration_seconds_count", 7, map[string]string{}},
 		{"prometheus_go_goroutines", 15, map[string]string{}},
+		{"prometheus_go_gc_metric", 0, map[string]string{}},
 	}
 
 	for _, e := range expected {
